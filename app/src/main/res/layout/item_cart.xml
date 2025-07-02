@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/ivCartProductImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvCartProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="@id/ivCartProductImage"
+            app:layout_constraintStart_toEndOf="@id/ivCartProductImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="12dp"/>
+
+        <TextView
+            android:id="@+id/tvCartProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$0.00"
+            android:textStyle="bold"
+            android:textColor="@color/purple_500"
+            app:layout_constraintTop_toBottomOf="@id/tvCartProductName"
+            app:layout_constraintStart_toEndOf="@id/ivCartProductImage"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"/>
+
+        <EditText
+            android:id="@+id/etCartQuantity"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            app:layout_constraintTop_toTopOf="@id/ivCartProductImage"
+            app:layout_constraintBottom_toBottomOf="@id/ivCartProductImage"
+            app:layout_constraintEnd_toStartOf="@id/btnRemoveCartItem"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnRemoveCartItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/ivCartProductImage"
+            android:layout_marginEnd="8dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">prm392-assignment</string>
+    <string name="total_amount">Total: $%.2f</string>
+</resources>
