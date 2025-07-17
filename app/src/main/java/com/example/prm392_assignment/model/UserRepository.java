@@ -18,6 +18,7 @@ public class UserRepository {
         values.put("name", user.getName());
         values.put("email", user.getEmail());
         values.put("password", user.getPassword());
+        values.put("role", user.getRole());
         long id = db.insert(DatabaseHelper.TABLE_USER, null, values);
         db.close();
         return id;
@@ -26,7 +27,7 @@ public class UserRepository {
     public User loginUser(String email, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(DatabaseHelper.TABLE_USER,
-                new String[]{"id", "name", "email", "password"},
+                new String[]{"id", "name", "email", "password", "role"},
                 "email=? AND password=?",
                 new String[]{email, password},
                 null, null, null);
@@ -36,7 +37,8 @@ public class UserRepository {
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getString(2),
-                    cursor.getString(3)
+                    cursor.getString(3),
+                    cursor.getString(4)
             );
             cursor.close();
         }
@@ -70,7 +72,7 @@ public class UserRepository {
     public User getUserById(int id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(DatabaseHelper.TABLE_USER,
-                new String[]{"id", "name", "email", "password"},
+                new String[]{"id", "name", "email", "password", "role"},
                 "id=?",
                 new String[]{String.valueOf(id)},
                 null, null, null);
@@ -80,7 +82,8 @@ public class UserRepository {
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getString(2),
-                    cursor.getString(3)
+                    cursor.getString(3),
+                    cursor.getString(4)
             );
             cursor.close();
         }

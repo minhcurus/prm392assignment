@@ -27,7 +27,7 @@ public class RegisterPresenter {
             view.onRegisterError("Email already exists");
             return;
         }
-        User user = new User(0, name, email, password);
+        User user = new User(0, name, email, password, "Customer");
         long id = userRepository.registerUser(user);
         if (id > 0) {
             user.setId((int) id);

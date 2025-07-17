@@ -26,7 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT, " +
                 "email TEXT UNIQUE, " +
-                "password TEXT)");
+                "password TEXT, " +
+                "role TEXT)");
 
         // Product table
         db.execSQL("CREATE TABLE " + TABLE_PRODUCT + " (" +

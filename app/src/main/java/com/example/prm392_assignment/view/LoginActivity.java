@@ -3,7 +3,9 @@ package com.example.prm392_assignment.view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392_assignment.R;
+import com.example.prm392_assignment.model.DatabaseHelper;
 import com.example.prm392_assignment.model.User;
 import com.example.prm392_assignment.presenter.LoginPresenter;
 
@@ -50,6 +53,9 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.L
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Log.d("DB_STATUS", "Database opened from LoginActivity");
     }
 
     @Override
@@ -61,7 +67,11 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.L
         editor.apply();
         Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
         // Go to HomeActivity
-        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        if (user.getRole().equalsIgnoreCase("Admin")) {
+//            startActivity(new Intent(LoginActivity.this, AdminProductActivity.class));
+//        } else {
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        }
         finish();
     }
 

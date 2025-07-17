@@ -78,11 +78,11 @@ public class ProfileActivity extends AppCompatActivity {
                 }
                 if (newPassword.isEmpty()) {
                     // Only update name
-                    User updatedUser = new User(userId, newName, user.getEmail(), user.getPassword());
+                    User updatedUser = new User(userId, newName, user.getEmail(), user.getPassword(), user.getRole());
                     userRepository.updateUser(updatedUser);
                 } else {
                     // Update name and password
-                    User updatedUser = new User(userId, newName, user.getEmail(), newPassword);
+                    User updatedUser = new User(userId, newName, user.getEmail(), newPassword, user.getRole());
                     userRepository.updateUser(updatedUser);
                 }
                 SharedPreferences.Editor editor = sharedPreferences.edit();
