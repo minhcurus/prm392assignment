@@ -1,6 +1,7 @@
 package com.example.prm392_assignment.view;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> productList;
     private OnAddToCartClickListener listener;
+    private OnItemLongClickListener longClickListener;
 
     public ProductAdapter(List<Product> productList, OnAddToCartClickListener listener) {
         this.productList = productList;
@@ -35,15 +37,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(view);
     }
-
+    public interface OnItemLongClickListener {
+        void onItemLongClick(int position, Product product);
+    }
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longClickListener = listener;
+    }
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.tvName.setText(product.getName());
         holder.tvDescription.setText(product.getDescription());
         holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
-        // Optionally load image if you have one
+        if (product.getImage() != null) {
+            holder.ivProductImage.setImageURI(Uri.parse(product.getImage()));
+        } else {
+            holder.ivProductImage.setImageResource(R.drawable.ic_image_placeholder);
+        }
         holder.btnAddToCart.setOnClickListener(v -> listener.onAddToCart(product));
+        holder.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onItemLongClick(holder.getAdapterPosition(), product);
+            }
+            return true;
+        });
     }
 
     @Override

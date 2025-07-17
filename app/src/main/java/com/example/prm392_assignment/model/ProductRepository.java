@@ -51,13 +51,30 @@ public class ProductRepository {
         db.close();
     }
 
-    private void insertProduct(SQLiteDatabase db, String name, String desc, double price, String image) {
+    public void insertProduct(SQLiteDatabase db, String name, String desc, double price, String image) {
         ContentValues values = new ContentValues();
         values.put("name", name);
         values.put("description", desc);
         values.put("price", price);
         values.put("image", image);
         db.insert(DatabaseHelper.TABLE_PRODUCT, null, values);
+    }
+    public long addProduct(Product product) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", product.getName());
+        values.put("description", product.getDescription());
+        values.put("price", product.getPrice());
+        values.put("image", product.getImage());
+
+        long id = db.insert("Product", null, values);
+        db.close();
+        return id;
+    }
+    public void deleteProduct(int productId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete("Product", "id = ?", new String[]{String.valueOf(productId)});
+        db.close();
     }
 }
 

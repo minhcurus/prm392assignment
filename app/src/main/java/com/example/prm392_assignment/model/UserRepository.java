@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class UserRepository {
     private DatabaseHelper dbHelper;
@@ -89,6 +90,33 @@ public class UserRepository {
         }
         db.close();
         return user;
+    }
+    public void insertAdminIfNotExists() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.query(
+                DatabaseHelper.TABLE_USER,
+                null,
+                "email = ?",
+                new String[]{"admin@gmail.com"},
+                null,
+                null,
+                null
+        );
+
+        if (!cursor.moveToFirst()) {
+            ContentValues values = new ContentValues();
+            values.put("name", "Admin");
+            values.put("email", "admin@gmail.com");
+            values.put("password", "admin123");
+            values.put("role", "Admin");
+            db.insert(DatabaseHelper.TABLE_USER, null, values);
+            Log.d("ADMIN_INIT", "Admin user inserted.");
+        } else {
+            Log.d("ADMIN_INIT", "Admin already exists.");
+        }
+
+        cursor.close();
+        db.close();
     }
 }
 

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.prm392_assignment.R;
 import com.example.prm392_assignment.model.DatabaseHelper;
 import com.example.prm392_assignment.model.User;
+import com.example.prm392_assignment.model.UserRepository;
 import com.example.prm392_assignment.presenter.LoginPresenter;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.LoginView {
@@ -30,14 +31,14 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvRegisterLink = findViewById(R.id.tvRegisterLink);
         presenter = new LoginPresenter(this, this);
         sharedPreferences = getSharedPreferences("user_session", Context.MODE_PRIVATE);
-
+        UserRepository userRepository = new UserRepository(this);
+        userRepository.insertAdminIfNotExists();
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,8 +69,8 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.L
         Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
         // Go to HomeActivity
         if (user.getRole().equalsIgnoreCase("Admin")) {
-//            startActivity(new Intent(LoginActivity.this, AdminProductActivity.class));
-//        } else {
+           startActivity(new Intent(this, AdminActivity.class));
+          } else {
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
         }
         finish();
