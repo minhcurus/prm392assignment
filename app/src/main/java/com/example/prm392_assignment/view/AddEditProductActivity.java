@@ -22,13 +22,27 @@ public class AddEditProductActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1001;
     private ImageView imageView;
     private Uri imageUri;
-
+    private int productId = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_product);
-
         imageView = findViewById(R.id.productImageView);
+        productId = getIntent().getIntExtra("PRODUCT_ID", -1);
+        if (productId != -1) {
+            ProductRepository repo = new ProductRepository(this);
+            Product product = repo.getProductById(productId); // Implement this method if missing
+            if (product != null) {
+                ((EditText) findViewById(R.id.etProductName)).setText(product.getName());
+                ((EditText) findViewById(R.id.etProductDescription)).setText(product.getDescription());
+                ((EditText) findViewById(R.id.etProductPrice)).setText(String.valueOf(product.getPrice()));
+
+                if (product.getImage() != null) {
+                    imageUri = Uri.parse(product.getImage());
+                    imageView.setImageURI(imageUri);
+                }
+            }
+        }
         imageView.setOnClickListener(v -> chooseImageFromGallery());
 
         findViewById(R.id.btnSaveProduct).setOnClickListener(v -> saveProduct());
@@ -64,9 +78,15 @@ public class AddEditProductActivity extends AppCompatActivity {
         product.setImage(imageUri != null ? imageUri.toString() : null);
 
         ProductRepository repo = new ProductRepository(this);
-        repo.addProduct(product);
+        if (productId != -1) {
+            product.setId(productId);
+            repo.updateProduct(product);
+            Toast.makeText(this, "Product updated!", Toast.LENGTH_SHORT).show();
+        } else {
+            repo.addProduct(product);
+            Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show();
+        }
 
-        Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show();
         finish();
     }
 }

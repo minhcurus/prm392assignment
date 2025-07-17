@@ -37,7 +37,21 @@ public class ProductRepository {
         db.close();
         return products;
     }
-
+    public Product getProductById(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_PRODUCT, null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            Product product = new Product();
+            product.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+            product.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+            product.setDescription(cursor.getString(cursor.getColumnIndexOrThrow("description")));
+            product.setPrice(cursor.getDouble(cursor.getColumnIndexOrThrow("price")));
+            product.setImage(cursor.getString(cursor.getColumnIndexOrThrow("image")));
+            cursor.close();
+            return product;
+        }
+        return null;
+    }
     public void insertSampleProducts() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // Only insert if table is empty
@@ -70,6 +84,15 @@ public class ProductRepository {
         long id = db.insert("Product", null, values);
         db.close();
         return id;
+    }
+    public void updateProduct(Product product) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", product.getName());
+        values.put("description", product.getDescription());
+        values.put("price", product.getPrice());
+        values.put("image", product.getImage());
+        db.update("Product", values, "id = ?", new String[]{String.valueOf(product.getId())});
     }
     public void deleteProduct(int productId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
