@@ -34,7 +34,7 @@ public class ProductManagementActivity extends AppCompatActivity {
 
         adapter = new ProductAdapter(productList, product -> {
             // Not needed here unless you want to "Add to Cart" in admin
-        });
+        },true);
 
         rvProductList.setAdapter(adapter);
 

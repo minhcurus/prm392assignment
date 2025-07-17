@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             cartRepo.addToCart(userId, product.getId(), 1);
             Toast.makeText(this, product.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
-        });
+        }, false);
         rvProducts.setAdapter(adapter);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);

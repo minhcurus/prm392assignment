@@ -25,10 +25,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private List<Product> productList;
     private OnAddToCartClickListener listener;
     private OnItemLongClickListener longClickListener;
+    private boolean isAdmin;
 
-    public ProductAdapter(List<Product> productList, OnAddToCartClickListener listener) {
+    public ProductAdapter(List<Product> productList, OnAddToCartClickListener listener, boolean isAdmin) {
         this.productList = productList;
         this.listener = listener;
+        this.isAdmin = isAdmin;
     }
 
     @NonNull
@@ -54,7 +56,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         } else {
             holder.ivProductImage.setImageResource(R.drawable.ic_image_placeholder);
         }
-        holder.btnAddToCart.setOnClickListener(v -> listener.onAddToCart(product));
+        if (isAdmin) {
+            holder.btnAddToCart.setVisibility(View.GONE);
+        } else {
+            holder.btnAddToCart.setVisibility(View.VISIBLE);
+            holder.btnAddToCart.setOnClickListener(v -> listener.onAddToCart(product));
+        }
         holder.itemView.setOnLongClickListener(v -> {
             if (longClickListener != null) {
                 longClickListener.onItemLongClick(holder.getAdapterPosition(), product);

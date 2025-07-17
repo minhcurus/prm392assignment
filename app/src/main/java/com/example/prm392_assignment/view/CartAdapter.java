@@ -1,5 +1,6 @@
 package com.example.prm392_assignment.view;
 
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         if (product != null) {
             holder.tvName.setText(product.getName());
             holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
-            // Optionally load image
+            if (product.getImage() != null && !product.getImage().isEmpty()) {
+                holder.ivCartProductImage.setImageURI(Uri.parse(product.getImage()));
+            } else {
+                holder.ivCartProductImage.setImageResource(R.drawable.ic_image_placeholder);
+            }
         }
         holder.etQuantity.setText(String.valueOf(item.getQuantity()));
         holder.btnRemove.setOnClickListener(v -> listener.onRemove(item));
