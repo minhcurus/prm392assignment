@@ -31,6 +31,11 @@ public class ProductManagementActivity extends AppCompatActivity {
 
         repository = new ProductRepository(this);
         productList = repository.getAllProducts();
+
+        adapter = new ProductAdapter(productList, product -> {
+            // Not needed here unless you want to "Add to Cart" in admin
+        });
+
         rvProductList.setAdapter(adapter);
 
         // Add long click for Edit/Delete popup
