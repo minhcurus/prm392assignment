@@ -128,5 +128,19 @@ public class OrderRepository {
         db.close();
         return items;
     }
+    public boolean deleteOrder(int orderId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.delete(DatabaseHelper.TABLE_ORDER_ITEM, "orderId = ?", new String[]{String.valueOf(orderId)});
+            int rowsAffected = db.delete(DatabaseHelper.TABLE_ORDER, "id = ?", new String[]{String.valueOf(orderId)});
+
+            db.setTransactionSuccessful();
+            return rowsAffected > 0;
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
 }
 
