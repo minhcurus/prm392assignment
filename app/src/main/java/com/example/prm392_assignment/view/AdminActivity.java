@@ -21,5 +21,14 @@ public class AdminActivity extends AppCompatActivity {
         findViewById(R.id.btnViewProducts).setOnClickListener(v ->
                 startActivity(new Intent(this, ProductManagementActivity.class))
         );
+
+        findViewById(R.id.btnViewUsers).setOnClickListener(v ->
+                startActivity(new Intent(this, UserManagementActivity.class))
+        );
+
+        findViewById(R.id.btnViewOrders).setOnClickListener(v ->
+                startActivity(new Intent(this, OrderManagementActivity.class))
+        );
+
     }
 }

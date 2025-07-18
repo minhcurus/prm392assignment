@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserRepository {
     private DatabaseHelper dbHelper;
 
@@ -118,5 +121,44 @@ public class UserRepository {
         cursor.close();
         db.close();
     }
+    public void updateUserAdmin(User user) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", user.getName());
+        values.put("email", user.getEmail());
+        db.update("User", values, "id = ?", new String[]{String.valueOf(user.getId())});
+        db.close();
+    }
+
+    public void deleteUser(int userId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete("User", "id = ?", new String[]{String.valueOf(userId)});
+        db.close();
+    }
+    public List<User> getAllUsers() {
+        List<User> userList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_USER,
+                new String[]{"id", "name", "email", "password", "role"},
+                null, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                User user = new User(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4)
+                );
+                userList.add(user);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return userList;
+    }
+
+
 }
 

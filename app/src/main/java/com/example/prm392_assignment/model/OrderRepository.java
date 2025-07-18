@@ -80,6 +80,30 @@ public class OrderRepository {
         return orders;
     }
 
+    public List<Order> getAllOrders() {
+        List<Order> orderList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(DatabaseHelper.TABLE_ORDER,
+                new String[]{"id", "userId", "date", "totalPrice"},
+                null, null, null, null, "date DESC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                Order order = new Order();
+                order.setId(cursor.getInt(0));
+                order.setUserId(cursor.getInt(1));
+                order.setDate(cursor.getString(2));
+                order.setTotalPrice(cursor.getDouble(3));
+                orderList.add(order);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return orderList;
+    }
+
     public List<OrderItem> getOrderItems(int orderId) {
         List<OrderItem> items = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();

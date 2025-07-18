@@ -31,4 +31,19 @@
         android:layout_height="wrap_content"
         android:text="Manage Products" />
 
+    <Button
+        android:id="@+id/btnViewUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Manage Users"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/btnViewOrders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Manage Orders"
+        android:layout_marginTop="12dp" />
+
+
 </LinearLayout>
