@@ -37,6 +37,7 @@ public class ProductRepository {
         db.close();
         return products;
     }
+
     public Product getProductById(int id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(DatabaseHelper.TABLE_PRODUCT, null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
@@ -52,14 +53,59 @@ public class ProductRepository {
         }
         return null;
     }
+
     public void insertSampleProducts() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // Only insert if table is empty
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_PRODUCT, null);
         if (cursor.moveToFirst() && cursor.getInt(0) == 0) {
-            insertProduct(db, "Cleanser", "Gentle foaming cleanser", 12.99, "");
-            insertProduct(db, "Moisturizer", "Hydrating daily moisturizer", 18.99, "");
-            insertProduct(db, "Sunscreen", "SPF 50+ broad spectrum", 15.99, "");
+            // Basic skincare essentials
+            insertProduct(db, "Gentle Cleanser", "Gentle foaming cleanser for sensitive skin", 12.99, "");
+            insertProduct(db, "Daily Moisturizer", "Hydrating daily moisturizer with hyaluronic acid", 18.99, "");
+            insertProduct(db, "Sunscreen SPF 50", "SPF 50+ broad spectrum protection", 15.99, "");
+
+            // Advanced skincare
+            insertProduct(db, "Vitamin C Serum", "Brightening vitamin C serum with antioxidants", 24.99, "");
+            insertProduct(db, "Retinol Night Cream", "Anti-aging night cream with retinol", 29.99, "");
+            insertProduct(db, "Hyaluronic Acid Serum", "Intense hydration booster serum", 21.99, "");
+            insertProduct(db, "Niacinamide Serum", "Pore minimizing serum with 10% niacinamide", 19.99, "");
+            insertProduct(db, "AHA/BHA Exfoliant", "Chemical exfoliant for smooth skin", 22.99, "");
+
+            // Specialized treatments
+            insertProduct(db, "Eye Cream", "Anti-aging eye cream with peptides", 32.99, "");
+            insertProduct(db, "Face Mask", "Hydrating sheet mask pack (5 pieces)", 14.99, "");
+            insertProduct(db, "Clay Mask", "Purifying clay mask for oily skin", 16.99, "");
+            insertProduct(db, "Lip Balm", "Moisturizing lip balm with SPF 15", 4.99, "");
+
+            // Makeup essentials
+            insertProduct(db, "Foundation", "Long-lasting liquid foundation", 28.99, "");
+            insertProduct(db, "Concealer", "Full coverage concealer", 16.99, "");
+            insertProduct(db, "Mascara", "Volumizing waterproof mascara", 13.99, "");
+            insertProduct(db, "Lipstick", "Matte finish lipstick", 11.99, "");
+            insertProduct(db, "Blush", "Natural glow powder blush", 15.99, "");
+            insertProduct(db, "Eyeshadow Palette", "12-color neutral eyeshadow palette", 25.99, "");
+
+            // Tools and accessories
+            insertProduct(db, "Makeup Brushes Set", "Professional makeup brush set (10 pieces)", 35.99, "");
+            insertProduct(db, "Beauty Sponge", "Latex-free makeup blending sponge", 8.99, "");
+            insertProduct(db, "Facial Roller", "Rose quartz facial massage roller", 19.99, "");
+            insertProduct(db, "Cleansing Brush", "Electric facial cleansing brush", 45.99, "");
+
+            // Body care
+            insertProduct(db, "Body Lotion", "Nourishing body lotion with shea butter", 13.99, "");
+            insertProduct(db, "Body Wash", "Moisturizing body wash with natural oils", 9.99, "");
+            insertProduct(db, "Hand Cream", "Intensive repair hand cream", 7.99, "");
+            insertProduct(db, "Body Scrub", "Exfoliating sugar body scrub", 17.99, "");
+
+            // Hair care
+            insertProduct(db, "Shampoo", "Sulfate-free hydrating shampoo", 14.99, "");
+            insertProduct(db, "Conditioner", "Deep conditioning hair treatment", 16.99, "");
+            insertProduct(db, "Hair Serum", "Frizz control and shine serum", 18.99, "");
+            insertProduct(db, "Hair Mask", "Weekly intensive repair hair mask", 21.99, "");
+
+            // Premium products
+            insertProduct(db, "Luxury Face Oil", "Premium anti-aging face oil blend", 49.99, "");
+            insertProduct(db, "Gold Serum", "24k gold infused luxury serum", 89.99, "");
         }
         cursor.close();
         db.close();
@@ -73,6 +119,7 @@ public class ProductRepository {
         values.put("image", image);
         db.insert(DatabaseHelper.TABLE_PRODUCT, null, values);
     }
+
     public long addProduct(Product product) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -85,6 +132,7 @@ public class ProductRepository {
         db.close();
         return id;
     }
+
     public void updateProduct(Product product) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -94,10 +142,10 @@ public class ProductRepository {
         values.put("image", product.getImage());
         db.update("Product", values, "id = ?", new String[]{String.valueOf(product.getId())});
     }
+
     public void deleteProduct(int productId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete("Product", "id = ?", new String[]{String.valueOf(productId)});
         db.close();
     }
 }
-

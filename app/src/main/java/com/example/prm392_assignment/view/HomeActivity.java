@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -44,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         int userId = sharedPreferences.getInt("user_id", -1);
         CartRepository cartRepo = new CartRepository(this);
 
-        // Initialize adapter with all products
+        // Initialize adapter with Add to Cart logic
         adapter = new ProductAdapter(allProducts, product -> {
             if (userId == -1) {
                 Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
@@ -53,6 +51,14 @@ public class HomeActivity extends AppCompatActivity {
             cartRepo.addToCart(userId, product.getId(), 1);
             Toast.makeText(this, product.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
         }, false);
+
+        // 👉 Set listener for item click to go to detail screen
+        adapter.setOnProductClickListener(product -> {
+            Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
+            intent.putExtra("product", product); // Product must implement Serializable
+            startActivity(intent);
+        });
+
         rvProducts.setAdapter(adapter);
 
         // Setup SearchView
@@ -71,11 +77,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        // Setup BottomNavigationView
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_home) {
-                // Already on Home
                 return true;
             } else if (id == R.id.nav_cart) {
                 startActivity(new Intent(this, CartActivity.class));
@@ -102,6 +108,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         }
-        adapter.updateList(filteredList); // Assume ProductAdapter has an updateList method
+        adapter.updateList(filteredList); // Make sure ProductAdapter has updateList()
     }
 }
