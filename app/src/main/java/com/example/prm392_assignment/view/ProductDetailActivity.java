@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.prm392_assignment.R;
 import com.example.prm392_assignment.model.Product;
 
 public class ProductDetailActivity extends AppCompatActivity {
@@ -17,38 +18,29 @@ public class ProductDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_product_detail);
 
-        try {
-            // Load layout không dùng R
-            int layoutId = getResources().getIdentifier("activity_product_detail", "layout", getPackageName());
-            setContentView(layoutId);
+        tvName = findViewById(R.id.tvName);
+        tvDescription = findViewById(R.id.tvDescription);
+        tvPrice = findViewById(R.id.tvPrice);
+        ivProduct = findViewById(R.id.ivProduct);
 
-            // Tìm view không dùng R.id
-            tvName = findViewById(getResources().getIdentifier("tvName", "id", getPackageName()));
-            tvDescription = findViewById(getResources().getIdentifier("tvDescription", "id", getPackageName()));
-            tvPrice = findViewById(getResources().getIdentifier("tvPrice", "id", getPackageName()));
-            ivProduct = findViewById(getResources().getIdentifier("ivProduct", "id", getPackageName()));
+        Product product = (Product) getIntent().getSerializableExtra("product");
 
-            // Nhận sản phẩm từ Intent
-            Product product = (Product) getIntent().getSerializableExtra("product");
+        if (product != null) {
+            tvName.setText(product.getName());
+            tvDescription.setText(product.getDescription());
+            tvPrice.setText(String.format("$%.2f", product.getPrice()));
 
-            if (product != null) {
-                tvName.setText(product.getName());
-                tvDescription.setText(product.getDescription());
-                tvPrice.setText(String.format("$%.2f", product.getPrice()));
-
-                // Load ảnh drawable không dùng R
-                int imageId = getResources().getIdentifier(product.getImage(), "drawable", getPackageName());
-                if (imageId != 0) {
-                    ivProduct.setImageResource(imageId);
-                } else {
-                    Toast.makeText(this, "Không tìm thấy ảnh", Toast.LENGTH_SHORT).show();
-                }
+            int imageResId = getResources().getIdentifier(product.getImage(), "drawable", getPackageName());
+            if (imageResId != 0) {
+                ivProduct.setImageResource(imageResId);
+            } else {
+                ivProduct.setImageResource(R.drawable.ic_image_placeholder);
+                Toast.makeText(this, "Không tìm thấy ảnh, dùng ảnh mặc định", Toast.LENGTH_SHORT).show();
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Có lỗi xảy ra khi load chi tiết sản phẩm", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Không có thông tin sản phẩm", Toast.LENGTH_LONG).show();
         }
     }
 }

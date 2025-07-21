@@ -1,6 +1,5 @@
 package com.example.prm392_assignment.view;
 
-import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,15 +26,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         void onItemLongClick(int position, Product product);
     }
 
+    public interface OnProductClickListener {
+        void onProductClick(Product product);
+    }
+
     private List<Product> productList;
     private OnAddToCartClickListener listener;
     private OnItemLongClickListener longClickListener;
+    private OnProductClickListener productClickListener;
     private boolean isAdmin;
 
     public ProductAdapter(List<Product> productList, OnAddToCartClickListener listener, boolean isAdmin) {
-        this.productList = new ArrayList<>(productList); // Create a copy to avoid modifying the original list
+        this.productList = new ArrayList<>(productList);
         this.listener = listener;
         this.isAdmin = isAdmin;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longClickListener = listener;
+    }
+
+    public void setOnProductClickListener(OnProductClickListener listener) {
+        this.productClickListener = listener;
     }
 
     @NonNull
@@ -45,27 +57,32 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return new ProductViewHolder(view);
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
-        this.longClickListener = listener;
-    }
-
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.tvName.setText(product.getName());
         holder.tvDescription.setText(product.getDescription());
         holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
+
         if (product.getImage() != null) {
             holder.ivProductImage.setImageURI(Uri.parse(product.getImage()));
         } else {
             holder.ivProductImage.setImageResource(R.drawable.ic_image_placeholder);
         }
+
         if (isAdmin) {
             holder.btnAddToCart.setVisibility(View.GONE);
         } else {
             holder.btnAddToCart.setVisibility(View.VISIBLE);
             holder.btnAddToCart.setOnClickListener(v -> listener.onAddToCart(product));
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (productClickListener != null) {
+                productClickListener.onProductClick(product);
+            }
+        });
+
         holder.itemView.setOnLongClickListener(v -> {
             if (longClickListener != null) {
                 longClickListener.onItemLongClick(holder.getAdapterPosition(), product);
@@ -79,7 +96,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productList.size();
     }
 
-    // Method to update the product list based on search results
     public void updateList(List<Product> newList) {
         productList.clear();
         productList.addAll(newList);
