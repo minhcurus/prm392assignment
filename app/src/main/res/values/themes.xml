@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.Prm392assignment" parent="Base.Theme.Prm392assignment" />
+
+    <style name="Theme.YourApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary theme -->
+        <item name="colorPrimary">@color/md_theme_primary</item>
+<!--        <item name="android:fontFamily">@font/poppins</item>-->
+    </style>
+
 </resources>
