@@ -5,10 +5,8 @@
     <color name="purple_200">#BB86FC</color>
     <color name="purple_500">#6200EE</color>
     <color name="purple_700">#3700B3</color>
-
     <color name="md_theme_primary">#3A96F0</color>
     <color name="md_theme_background">#E3F2FD</color>
-
     <color name="background_light">#FAFAFA</color>
-
+    <color name="light_blue_primary">#E3F2FD</color>
 </resources>
