@@ -4,69 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/profile_background"
+    android:padding="16dp"
     tools:context=".view.ProfileActivity">
 
+    <!-- Title -->
     <TextView
         android:id="@+id/tvProfileTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="24sp"
+        android:text="Edit Profile"
+        android:textSize="26sp"
         android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/montserrat"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="32dp" />
 
+    <!-- Name Input -->
     <EditText
         android:id="@+id/etProfileName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Name"
+        android:padding="12dp"
+        android:background="@drawable/edittext_background"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:fontFamily="@font/gabarito"
         app:layout_constraintTop_toBottomOf="@id/tvProfileTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        android:layout_marginTop="24dp" />
 
+    <!-- Password Input -->
     <EditText
         android:id="@+id/etProfilePassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="New Password"
         android:inputType="textPassword"
+        android:padding="12dp"
+        android:background="@drawable/edittext_background"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:fontFamily="@font/gabarito"
         app:layout_constraintTop_toBottomOf="@id/etProfileName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        android:layout_marginTop="16dp" />
 
+    <!-- Update Button -->
     <Button
         android:id="@+id/btnUpdateProfile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Update Profile"
+        android:backgroundTint="@color/purple_500"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/montserrat"
         app:layout_constraintTop_toBottomOf="@id/etProfilePassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        android:layout_marginTop="24dp" />
 
+    <!-- Logout Button -->
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Logout"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/montserrat"
         app:layout_constraintTop_toBottomOf="@id/btnUpdateProfile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        android:layout_marginTop="12dp" />
 
+    <!-- Order History Label -->
     <TextView
         android:id="@+id/tvOrderHistoryLabel"
         android:layout_width="wrap_content"
@@ -74,11 +92,13 @@
         android:text="Order History"
         android:textStyle="bold"
         android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/montserrat"
         app:layout_constraintTop_toBottomOf="@id/btnLogout"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"/>
+        android:layout_marginTop="32dp" />
 
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOrderHistory"
         android:layout_width="0dp"
@@ -88,9 +108,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"/>
-
+        android:layout_marginBottom="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-
