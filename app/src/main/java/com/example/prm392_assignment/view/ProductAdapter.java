@@ -60,11 +60,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
+
         holder.tvName.setText(product.getName());
         holder.tvDescription.setText(product.getDescription());
         holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
 
-        if (product.getImage() != null) {
+        if (product.getImage() != null && !product.getImage().isEmpty()) {
             holder.ivProductImage.setImageURI(Uri.parse(product.getImage()));
         } else {
             holder.ivProductImage.setImageResource(R.drawable.ic_image_placeholder);

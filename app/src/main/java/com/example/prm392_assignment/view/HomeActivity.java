@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // Insert sample products if needed
         ProductRepository productRepo = new ProductRepository(this);
         productRepo.insertSampleProducts();
         allProducts = productRepo.getAllProducts();
@@ -41,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         int userId = sharedPreferences.getInt("user_id", -1);
         CartRepository cartRepo = new CartRepository(this);
 
+        // Initialize adapter with Add to Cart logic
         adapter = new ProductAdapter(allProducts, product -> {
             if (userId == -1) {
                 Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
@@ -50,17 +52,16 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, product.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
         }, false);
 
-        // Gắn sự kiện khi click vào sản phẩm
+        // 👉 Set listener for item click to go to detail screen
         adapter.setOnProductClickListener(product -> {
             Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-            intent.putExtra("name", product.getName());
-            intent.putExtra("description", product.getDescription());
-            intent.putExtra("price", product.getPrice());
+            intent.putExtra("product", product); // Product must implement Serializable
             startActivity(intent);
         });
 
         rvProducts.setAdapter(adapter);
 
+        // Setup SearchView
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -76,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        // Setup BottomNavigationView
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -93,6 +95,7 @@ public class HomeActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(R.id.nav_home);
     }
 
+    // Method to filter products based on search query
     private void filterProducts(String query) {
         List<Product> filteredList = new ArrayList<>();
         if (query == null || query.isEmpty()) {
@@ -105,6 +108,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         }
-        adapter.updateList(filteredList);
+        adapter.updateList(filteredList); // Make sure ProductAdapter has updateList()
     }
 }
