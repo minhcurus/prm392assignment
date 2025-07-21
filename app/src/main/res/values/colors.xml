@@ -9,4 +9,7 @@
     <color name="md_theme_background">#E3F2FD</color>
     <color name="background_light">#FAFAFA</color>
     <color name="light_blue_primary">#E3F2FD</color>
+    <color name="light_blue_profile">#4a97db</color>
+    <color name="blue_profile">#444fa2</color>
+    <color name="background_profile">#b5cae3</color>
 </resources>

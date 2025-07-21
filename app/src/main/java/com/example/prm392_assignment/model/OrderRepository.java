@@ -56,6 +56,22 @@ public class OrderRepository {
         return price;
     }
 
+    public Order getOrderById(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("OrderTable", null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            Order order = new Order(
+                    cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("userId")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("date")),
+                    cursor.getDouble(cursor.getColumnIndexOrThrow("totalPrice"))
+            );
+            cursor.close();
+            return order;
+        }
+        return null;
+    }
+
     public List<Order> getOrdersByUser(int userId) {
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -67,10 +83,10 @@ public class OrderRepository {
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 Order order = new Order(
-                        cursor.getInt(0),
-                        cursor.getInt(1),
-                        cursor.getString(2),
-                        cursor.getDouble(3)
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("userId")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("date")),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow("totalPrice"))
                 );
                 orders.add(order);
             } while (cursor.moveToNext());
@@ -102,6 +118,35 @@ public class OrderRepository {
         cursor.close();
         db.close();
         return orderList;
+    }
+
+    public List<OrderItemWithProduct> getOrderItemDetails(Context context, int orderId) {
+        List<OrderItemWithProduct> result = new ArrayList<>();
+        ProductRepository productRepo = new ProductRepository(context);
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_ORDER_ITEM,
+                new String[]{"productId", "quantity", "price"},
+                "orderId=?",
+                new String[]{String.valueOf(orderId)},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int productId = cursor.getInt(0);
+                int quantity = cursor.getInt(1);
+                double price = cursor.getDouble(2);
+
+                Product product = productRepo.getProductById(productId);
+                if (product != null) {
+                    result.add(new OrderItemWithProduct(product, quantity, price));
+                }
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        db.close();
+        return result;
     }
 
     public List<OrderItem> getOrderItems(int orderId) {

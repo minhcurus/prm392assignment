@@ -67,6 +67,7 @@ public class UserRepository {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", user.getName());
+        values.put("email", user.getEmail());
         values.put("password", user.getPassword());
         int rows = db.update(DatabaseHelper.TABLE_USER, values, "id=?", new String[]{String.valueOf(user.getId())});
         db.close();
