@@ -8,4 +8,7 @@
 
     <color name="md_theme_primary">#1976D2</color>
     <color name="md_theme_background">#E3F2FD</color>
+
+    <color name="background_light">#FAFAFA</color>
+
 </resources>
