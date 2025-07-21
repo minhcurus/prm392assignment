@@ -15,11 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.prm392_assignment.R;
 import com.example.prm392_assignment.model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     public interface OnAddToCartClickListener {
         void onAddToCart(Product product);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(int position, Product product);
     }
 
     private List<Product> productList;
@@ -28,7 +33,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private boolean isAdmin;
 
     public ProductAdapter(List<Product> productList, OnAddToCartClickListener listener, boolean isAdmin) {
-        this.productList = productList;
+        this.productList = new ArrayList<>(productList); // Create a copy to avoid modifying the original list
         this.listener = listener;
         this.isAdmin = isAdmin;
     }
@@ -39,12 +44,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(view);
     }
-    public interface OnItemLongClickListener {
-        void onItemLongClick(int position, Product product);
-    }
+
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.longClickListener = listener;
     }
+
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
@@ -75,10 +79,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productList.size();
     }
 
+    // Method to update the product list based on search results
+    public void updateList(List<Product> newList) {
+        productList.clear();
+        productList.addAll(newList);
+        notifyDataSetChanged();
+    }
+
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvDescription, tvPrice;
         ImageView ivProductImage;
         Button btnAddToCart;
+
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvProductName);
@@ -89,4 +101,3 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
     }
 }
-

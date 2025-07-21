@@ -46,25 +46,50 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         CartItem item = cartItems.get(position);
         Product product = getProductById(item.getProductId());
+
         if (product != null) {
             holder.tvName.setText(product.getName());
-            holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
+            updatePrice(holder, item, product); // Cập nhật giá ban đầu
             if (product.getImage() != null && !product.getImage().isEmpty()) {
                 holder.ivCartProductImage.setImageURI(Uri.parse(product.getImage()));
             } else {
                 holder.ivCartProductImage.setImageResource(R.drawable.ic_image_placeholder);
             }
         }
+
         holder.etQuantity.setText(String.valueOf(item.getQuantity()));
+
         holder.btnRemove.setOnClickListener(v -> listener.onRemove(item));
+
+        holder.btnIncreaseQty.setOnClickListener(v -> {
+            int currentQty = item.getQuantity();
+            int newQty = currentQty + 1;
+            item.setQuantity(newQty);
+            holder.etQuantity.setText(String.valueOf(newQty));
+            updatePrice(holder, item, getProductById(item.getProductId())); // Cập nhật giá
+            listener.onQuantityChanged(item, newQty);
+        });
+
+        holder.btnDecreaseQty.setOnClickListener(v -> {
+            int currentQty = item.getQuantity();
+            if (currentQty > 1) {
+                int newQty = currentQty - 1;
+                item.setQuantity(newQty);
+                holder.etQuantity.setText(String.valueOf(newQty));
+                updatePrice(holder, item, getProductById(item.getProductId())); // Cập nhật giá
+                listener.onQuantityChanged(item, newQty);
+            }
+        });
+
         holder.etQuantity.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 String qtyStr = holder.etQuantity.getText().toString();
                 if (!TextUtils.isEmpty(qtyStr)) {
                     int newQty = Integer.parseInt(qtyStr);
                     if (newQty > 0 && newQty != item.getQuantity()) {
-                        listener.onQuantityChanged(item, newQty);
                         item.setQuantity(newQty);
+                        updatePrice(holder, item, getProductById(item.getProductId())); // Cập nhật giá
+                        listener.onQuantityChanged(item, newQty);
                     }
                 }
             }
@@ -83,19 +108,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return null;
     }
 
+    private void updatePrice(CartViewHolder holder, CartItem item, Product product) {
+        if (product != null) {
+            double totalPrice = product.getPrice() * item.getQuantity();
+            holder.tvPrice.setText("$" + String.format("%.2f", totalPrice));
+        }
+    }
+
     static class CartViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvPrice;
         EditText etQuantity;
-        Button btnRemove;
+        Button btnRemove, btnIncreaseQty, btnDecreaseQty;
         ImageView ivCartProductImage;
+
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvCartProductName);
             tvPrice = itemView.findViewById(R.id.tvCartProductPrice);
             etQuantity = itemView.findViewById(R.id.etCartQuantity);
             btnRemove = itemView.findViewById(R.id.btnRemoveCartItem);
+            btnIncreaseQty = itemView.findViewById(R.id.btnIncreaseQty);
+            btnDecreaseQty = itemView.findViewById(R.id.btnDecreaseQty);
             ivCartProductImage = itemView.findViewById(R.id.ivCartProductImage);
         }
     }
 }
-
