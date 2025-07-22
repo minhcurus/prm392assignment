@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.prm392_assignment.R;
 import com.example.prm392_assignment.model.Product;
 
@@ -66,7 +67,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
 
         if (product.getImage() != null && !product.getImage().isEmpty()) {
-            holder.ivProductImage.setImageURI(Uri.parse(product.getImage()));
+            Glide.with(holder.itemView.getContext())
+                    .load(product.getImage())
+                    .placeholder(R.drawable.ic_image_placeholder) // optional
+                    .into(holder.ivProductImage);
         } else {
             holder.ivProductImage.setImageResource(R.drawable.ic_image_placeholder);
         }

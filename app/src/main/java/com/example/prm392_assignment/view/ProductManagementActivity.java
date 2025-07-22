@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,8 @@ public class ProductManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_management);
 
         rvProductList = findViewById(R.id.rvProductList);
+        rvProductList.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
+        rvProductList.setAdapter(adapter);
         rvProductList.setLayoutManager(new LinearLayoutManager(this));
 
         repository = new ProductRepository(this);
