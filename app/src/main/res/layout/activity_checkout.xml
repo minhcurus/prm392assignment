@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_profile"
     tools:context=".view.CheckoutActivity">
 
     <TextView
@@ -21,7 +22,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCheckoutItems"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="500dp"
+        android:padding="10dp"
         app:layout_constraintTop_toBottomOf="@id/tvCheckoutTitle"
         app:layout_constraintBottom_toTopOf="@id/tvTotalLabel"
         app:layout_constraintStart_toStartOf="parent"

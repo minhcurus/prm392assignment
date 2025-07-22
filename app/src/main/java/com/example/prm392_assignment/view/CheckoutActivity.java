@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,11 +42,12 @@ public class CheckoutActivity extends AppCompatActivity {
         orderRepository = new OrderRepository(this);
         allProducts = productRepository.getAllProducts();
         cartItems = cartRepository.getCartItems(userId);
+        Log.d("CHECKOUT", "Cart size: " + cartItems.size());
 
         RecyclerView rvCheckoutItems = findViewById(R.id.rvCheckoutItems);
         rvCheckoutItems.setLayoutManager(new LinearLayoutManager(this));
-        CartAdapter cartAdapter = new CartAdapter(cartItems, allProducts, null);
-        rvCheckoutItems.setAdapter(cartAdapter);
+        CheckoutProductAdapter adapter = new CheckoutProductAdapter(cartItems, allProducts);
+        rvCheckoutItems.setAdapter(adapter);
 
         double total = 0;
         for (CartItem item : cartItems) {
