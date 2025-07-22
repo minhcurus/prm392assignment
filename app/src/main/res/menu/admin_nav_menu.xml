@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_add_product"
+        android:icon="@drawable/ic_add"
+        android:title="Add Product" />
+    <item
+        android:id="@+id/nav_manage_products"
+        android:icon="@drawable/ic_product"
+        android:title="Manage Products" />
+    <item
+        android:id="@+id/nav_manage_users"
+        android:icon="@drawable/ic_people"
+        android:title="Manage Users" />
+    <item
+        android:id="@+id/nav_manage_orders"
+        android:icon="@drawable/ic_order"
+        android:title="Manage Orders" />
+</menu>

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "skincare_sales.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     // Table names
     public static final String TABLE_USER = "User";
@@ -32,10 +32,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Product table
         db.execSQL("CREATE TABLE " + TABLE_PRODUCT + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "name TEXT, " +
+                "name TEXT NOT NULL, " +
                 "description TEXT, " +
-                "price REAL, " +
-                "image TEXT)");
+                "price REAL NOT NULL DEFAULT 0.0, " +
+                "image TEXT, " +
+                "brand TEXT, " +
+                "category TEXT, " +
+                "skinType TEXT, " +
+                "usageInstructions TEXT, " +
+                "expiryDate TEXT, " + // Stored as ISO-8601 string (e.g., "2025-12-31")
+                "stock INTEGER NOT NULL DEFAULT 0)");
 
         // CartItem table
         db.execSQL("CREATE TABLE " + TABLE_CART_ITEM + " (" +
